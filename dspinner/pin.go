@@ -859,6 +859,9 @@ func (p *pinner) PinWithMode(c cid.Cid, mode ipfspinner.Mode) {
 // RemoveAll removes all pins and indexes, and returns a count of the number of
 // pins removed
 func (p *pinner) RemoveAll(ctx context.Context) (int, error) {
+	p.lock.Lock()
+	defer p.lock.Unlock()
+
 	count, err := p.removeAll(ctx)
 	if err != nil {
 		log.Errorf("failed to remove all pins: %s", err)
